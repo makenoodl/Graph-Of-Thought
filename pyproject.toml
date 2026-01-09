@@ -1,0 +1,27 @@
+[project]
+name = "graph-of-thought"
+version = "0.1.0"
+description = "Graph-of-Thought reasoning engine for graph-native cognitive systems"
+authors = [{ name = "Mawen Salignat-Moandal" }]
+requires-python = ">=3.11"
+
+dependencies = [
+  "pydantic>=2.5",
+  "networkx>=3.2",
+  "fastapi>=0.110",
+  "uvicorn>=0.29",
+]
+
+[project.optional-dependencies]
+llm = [
+  "openai>=1.0",
+  "transformers>=4.38",
+]
+
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.3",
+]
+
+[tool.uv]
+dev-dependencies = ["pytest", "ruff"]
