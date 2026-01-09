@@ -2,6 +2,33 @@
 from dataclasses import dataclass
 from typing import Union
 
+"""
+Confidence is a domain-level Value Object representing epistemic belief
+within the Graph-of-Thought system.
+
+It models how strongly the system (or the human user) believes in a given
+concept, hypothesis, or relation at a specific point in time.
+
+This is NOT a statistical probability and NOT a measure of model accuracy.
+Instead, it represents a cognitive confidence level, explicitly encoding
+uncertainty as a first-class concept in the reasoning process.
+
+Key properties:
+- Bounded between 0.0 (no confidence) and 1.0 (full confidence)
+- Immutable (Value Object): any change produces a new instance
+- Comparable by value, not identity
+- Designed to evolve over time through reasoning operations
+
+Confidence enables:
+- Non-binary reasoning (beliefs can be weak or strong)
+- Hypothesis revision instead of hard deletion
+- Confidence propagation across graph relations
+- Auditable and explainable reasoning dynamics
+
+By modeling confidence explicitly, the system avoids treating reasoning
+as absolute truth and instead supports gradual belief updates, closer
+to human cognitive processes.
+"""
 
 @dataclass(frozen=True)
 class Confidence:
