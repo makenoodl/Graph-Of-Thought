@@ -86,6 +86,16 @@ class Edge:
         """Checks if the relation is logical."""
         return self.relation_type.is_logical()
     
+    def get_layer(self) -> str:
+        """Gets the layer of this edge.
+        
+        The layer represents the dimension of reasoning of the relation.
+        
+        Returns:
+            str: The layer of the relation ("causal", "epistemic", "structural", "temporal", or "logical")
+        """
+        return self.relation_type.get_layer()
+    
     def update_confidence(self, new_confidence: Confidence) -> None:
         """Updates the confidence level of the relation.
         
@@ -111,6 +121,22 @@ class Edge:
         """
         self.update_confidence(self.confidence.strengthen(factor))
     
+    def is_epistemic(self) -> bool:
+        """Checks if this edge is epistemic.
+        
+        Returns:
+            True if this edge is epistemic, False otherwise
+        """
+        return self.relation_type.is_epistemic()
+    
+    def is_structural(self) -> bool:
+        """ Verify if this edge is structural."""
+        return self.relation_type.is_structural()
+    
+    def is_temporal(self) -> bool:
+        """Verify if this edge is temporal."""
+        return self.relation_type.is_temporal()
+
     def update_metadata(self, key: str, value: Any) -> None:
         """Updates metadata for the edge.
         
