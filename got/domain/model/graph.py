@@ -191,7 +191,38 @@ class Graph:
         Returns:
             List of causal edges
         """
-        return [e for e in self.edges if e.is_causal()]
+        return self.get_edges_by_layer("causal")
+    
+    def get_edges_by_layer(self, layer: str) -> List[Edge]:
+        """Gets all edges of a specific layer."""
+        valid_layers = {"causal", "epistemic", "structural", "temporal", "logical"}
+        if layer not in valid_layers:
+            raise ValueError(f"Invalid layer: {layer}. Must be one of {valid_layers}")
+        return [e for e in self.edges if e.get_layer() == layer]
+    
+    def get_epistemic_edges(self) -> List[Edge]:
+        """Gets all epistemic edges.
+        
+        Returns:
+            List of epistemic edges
+        """
+        return self.get_edges_by_layer("epistemic")
+    
+    def get_structural_edges(self) -> List[Edge]:
+        """Gets all structural edges.
+        
+        Returns:
+            List of structural edges
+        """
+        return self.get_edges_by_layer("structural")
+    
+    def get_temporal_edges(self) -> List[Edge]:
+        """Gets all temporal edges.
+        
+        Returns:
+            List of temporal edges
+        """
+        return self.get_edges_by_layer("temporal")
     
     def get_nodes_by_type(self, node_type: NodeType) -> List[Node]:
         """Gets all nodes of a specific type.
