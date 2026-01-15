@@ -11,4 +11,5 @@ __all__ = [
     "EdgeAdded",
     "ContradictionDetected",
     "GraphUpdated",
+    "CycleDetected",
 ]
