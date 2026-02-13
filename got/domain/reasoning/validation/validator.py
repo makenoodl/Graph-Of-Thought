@@ -3,6 +3,8 @@ from typing import List, Callable, Optional
 from got.domain.model.graph import Graph
 from got.domain.reasoning.validation.base_validator import BaseValidator, ValidationResult
 from got.domain.reasoning.validation.causal_validator import CausalValidator
+from got.domain.reasoning.validation.epistemic_validator import EpistemicValidator
+from got.domain.reasoning.validation.structural_validator import StructuralValidator
 
 
 class Validator:
@@ -34,9 +36,8 @@ class Validator:
         # This is where you add new validators as you implement them
         self.validators: List[BaseValidator] = [
             CausalValidator(event_handler=event_handler),
-            # TODO: Add as you implement them
-            # EpistemicValidator(event_handler=event_handler),
-            # StructuralValidator(event_handler=event_handler),
+            EpistemicValidator(event_handler=event_handler),
+            StructuralValidator(event_handler=event_handler),
         ]
     
     def validate(self, graph: Graph) -> ValidationResult:
