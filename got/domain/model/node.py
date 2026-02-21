@@ -14,8 +14,8 @@ class Node:
     A node is the atomic unit of thought in the system.
     It represents a concept, a hypothesis, a fact, etc.
     """
-    id: str = field(default_factory=lambda: str(uuid4()))
     concept: str  # Textual representation of the concept
+    id: str = field(default_factory=lambda: str(uuid4()))
     node_type: NodeType = NodeType.CONCEPT
     confidence: Confidence = field(default_factory=lambda: Confidence(0.5))
     created_at: datetime = field(default_factory=datetime.now)
