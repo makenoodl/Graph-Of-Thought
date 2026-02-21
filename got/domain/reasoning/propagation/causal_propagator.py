@@ -30,28 +30,33 @@ class CausalPropagator:
         """Propagate along causal edges (cause → effect). Mutates graph in place. BFS on causal edges only."""
         if not starting_node_ids:
             return
-
+        # Initialize the queue and visited set
         queue = deque()
         visited = set()
-
+        
+        # Add the starting nodes to the queue and visited set
         for nid in starting_node_ids:
             if graph.has_node(nid) and nid not in visited:
                 queue.append(nid)
                 visited.add(nid)
 
+        # Process the queue
         while queue:
             node_id = queue.popleft()
             source = graph.get_node(node_id)
             if not source:
                 continue
 
+            # Process the edges from the current node
             for edge in graph.get_edges_from(node_id):
                 if not edge.relation_type.is_causal():
                     continue
+                # Get the target node
                 target = graph.get_node(edge.target_id)
                 if not target:
                     continue
 
+                # Update the confidence of the target node
                 if edge.relation_type in _STRENGTHENING:
                     new_conf = target.confidence.strengthen(self.factor)
                 elif edge.relation_type in _WEAKENING:
@@ -61,6 +66,7 @@ class CausalPropagator:
 
                 target.update_confidence(new_conf)
 
+                # Add the target node to the queue and visited set if it has not been visited yet
                 if edge.target_id not in visited:
                     visited.add(edge.target_id)
                     queue.append(edge.target_id)
