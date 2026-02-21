@@ -74,3 +74,10 @@ class NodeRemoved:
             node_type=node.node_type.value,
             timestamp=datetime.now()
         )
+@dataclass(frozen=True)
+class NodeConfidenceUpdated:
+    """Event fired when a node's confidence is updated."""
+    node_id: str
+    old_confidence: float
+    new_confidence: float
+    timestamp: datetime
