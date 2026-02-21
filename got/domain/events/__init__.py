@@ -1,9 +1,9 @@
 """Domain events for tracking graph modifications."""
-from got.domain.events.node_created import NodeCreated
-from got.domain.events.node_removed import NodeRemoved
-from got.domain.events.edge_added import EdgeAdded
-from got.domain.events.contradiction_detected import ContradictionDetected
+from got.domain.events.node_events import NodeCreated, NodeRemoved
+from got.domain.events.edge_events import EdgeAdded, EdgeRemoved
 from got.domain.events.graph_updated import GraphUpdated
+from got.domain.events.contradiction_detected import ContradictionDetected
+from got.domain.events.cycle_detected import CycleDetected
 
 __all__ = [
     "NodeCreated",
@@ -12,4 +12,5 @@ __all__ = [
     "ContradictionDetected",
     "GraphUpdated",
     "CycleDetected",
+    "EdgeRemoved",
 ]
