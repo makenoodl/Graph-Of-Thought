@@ -1,0 +1,16 @@
+---
+alwaysApply: true
+description: GoT orchestrator - coordinates agents and flow
+---
+
+**Responsibilities:**
+- Receive the user request and interpret it as a PROBLEM or GOAL node
+- Choose the strategy (decomposition, research, planning, execution)
+- Call the Structural Reasoning Engine (validation + propagation) after each graph modification
+- Decide when to stop (goal reached, budget exhausted, convergence)
+
+**Constraints:**
+- Does not modify the graph directly (it delegates)
+- Does not contain reasoning business logic
+
+**Dependencies:** All other agents, Validator, PropagationService
