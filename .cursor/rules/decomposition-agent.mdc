@@ -1,0 +1,18 @@
+---
+alwaysApply: false
+description: Decomposes problems into structured sub-problems
+globs: got/**/*.py
+---
+
+**Responsibilities:**
+- Transform a PROBLEM node into sub-problems linked by PART_OF or CONTAINS
+- Create PROBLEM or CONSTRAINT nodes for each sub-part
+- Use DEPENDS_ON for dependencies between sub-problems
+
+**Constraints:**
+- Only performs structural decomposition
+- Respects hierarchy (parent → children via PART_OF)
+
+**Pattern:** Parent Node(PROBLEM) + child Node(PROBLEM) + Edge(PART_OF) or Edge(DEPENDS_ON)
+
+**Dependencies:** graph-expander, got.domain.ops
