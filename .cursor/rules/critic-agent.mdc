@@ -1,0 +1,17 @@
+---
+alwaysApply: false
+description: Evaluates reasoning quality and identifies issues
+globs: got/domain/reasoning/**/*.py
+---
+
+**Responsibilities:**
+- Analyze the graph (contradictions, critical paths, coherence)
+- Use the Validator and analysis modules (ContradictionDetector, etc.)
+- Produce structured feedback (violations, suggestions)
+- Propose corrections (nodes to revise, edges to add/remove)
+
+**Constraints:**
+- Does not modify the graph directly; it proposes changes
+- Uses only the non-LLM layer for structural validation
+
+**Dependencies:** Validator, ValidationResult, analysis modules
