@@ -1,0 +1,16 @@
+---
+alwaysApply: false
+description: Reduces graph by removing low-value nodes
+globs: got/domain/ops/**/*.py
+---
+
+**Responsibilities:**
+- Remove redundant, weakly connected, or low-confidence nodes
+- Use remove_node, remove_edge
+- Ensure removal does not break coherence (re-validate after prune)
+
+**Constraints:**
+- Does not remove nodes on critical paths identified by analysis
+- Coordinates with memory-curator
+
+**Dependencies:** RemoveNode, RemoveEdge, Validator
