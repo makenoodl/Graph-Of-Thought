@@ -1,4 +1,12 @@
-"""Critical reasoning paths - support chains for a target node."""
+
+"""Critical reasoning paths - support chains for a target node.
+
+This module is part of the Structural Reasoning Engine (Phase 2). It extracts
+the key support paths for a target node (e.g. a conclusion).
+
+It helps understand why the system considers a claim justified.
+"""
+
 from collections import deque
 from dataclasses import dataclass, field
 from typing import List

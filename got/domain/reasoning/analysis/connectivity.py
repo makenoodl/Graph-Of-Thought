@@ -1,4 +1,14 @@
-"""Connectivity analysis for the reasoning graph."""
+"""Connectivity analysis for the reasoning graph.
+
+This module is part of the Structural Reasoning Engine (Phase 2). It examines
+the graph's connectivity structure:
+- Connected components (disjoint subgraphs)
+- Articulation points (critical nodes)
+- Cycles (undirected paths that start and end at the same node)
+
+It helps understand whether reasoning is fragmented or well-integrated.
+"""
+
 from collections import deque
 from dataclasses import dataclass, field
 from typing import List, Set
