@@ -1,0 +1,17 @@
+---
+alwaysApply: false
+description: Meta-reasoning about the reasoning process itself
+globs: got/**/*.py
+---
+
+**Responsibilities:**
+- Analyze past reasoning paths
+- Identify patterns (what worked, recurring errors)
+- Create CONSTRAINT nodes or metadata to guide future iterations
+- Improve orchestrator strategies
+
+**Constraints:**
+- Operates on history and metadata, not only the current graph
+- May create "lesson learned" or "strategy" nodes
+
+**Dependencies:** got-orchestrator
