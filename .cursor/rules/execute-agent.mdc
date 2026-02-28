@@ -1,0 +1,17 @@
+---
+alwaysApply: false
+description: Executes concrete actions and updates graph with results
+globs: got/**/*.py
+---
+
+**Responsibilities:**
+- Read GOAL or STATE nodes to execute
+- Call tools (code execution, web requests, etc.)
+- Create FACT or STATE nodes for results
+- Link results and goals with CAUSES, ENABLES, EVIDENCE_FOR
+
+**Constraints:**
+- Only modifies the graph with execution results
+- Does not reason about structure; it executes and reports
+
+**Dependencies:** graph-expander, got.domain.ops
