@@ -1,0 +1,16 @@
+---
+alwaysApply: false
+description: Applies graph mutations requested by other agents
+globs: got/domain/ops/**/*.py
+---
+
+**Responsibilities:**
+- Centralize add_node, add_edge, update_node_confidence operations
+- Apply suggestions from critic, research-agent, etc.
+- Ensure ID and reference consistency
+
+**Constraints:**
+- Does not decide what to add; it executes mutations
+- Uses domain ops (AddNode, AddEdge, etc.)
+
+**Dependencies:** got.domain.ops, Graph
