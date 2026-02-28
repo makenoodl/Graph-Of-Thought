@@ -1,0 +1,16 @@
+---
+alwaysApply: false
+description: Manages what is kept or forgotten in the graph
+globs: got/**/*.py
+---
+
+**Responsibilities:**
+- Mark nodes as "to keep" or "candidates for forgetting"
+- Apply criteria (importance, age, connectivity)
+- Delegate deletion to the pruning-agent
+
+**Constraints:**
+- Does not delete directly; it marks or prioritizes
+- Respects invariants (does not cut critical paths)
+
+**Dependencies:** pruning-agent
