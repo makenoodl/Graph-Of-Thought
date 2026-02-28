@@ -1,0 +1,18 @@
+---
+alwaysApply: false
+description: Enriches graph with external facts and evidence
+globs: got/**/*.py
+---
+
+**Responsibilities:**
+- Search for information relevant to existing nodes
+- Create FACT or CONCEPT nodes with EVIDENCE_FOR / EVIDENCE_AGAINST / EXPLAINS
+- Annotate sources in metadata
+
+**Constraints:**
+- Only creates nodes and edges; no structural validation
+- Uses epistemic RelationType (EVIDENCE_FOR, STRENGTHENS, WEAKENS)
+
+**Pattern:** Node(FACT, concept="...", metadata={"source": "..."}) + Edge(EVIDENCE_FOR)
+
+**Dependencies:** graph-expander, got.domain.ops
