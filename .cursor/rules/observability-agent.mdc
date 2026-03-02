@@ -1,3 +1,17 @@
 ---
-alwaysApply: true
+alwaysApply: false
+description: Traces, metrics, and system debugging
+globs: got/domain/events/**/*.py
 ---
+
+**Responsibilities:**
+- Log orchestrator decisions
+- Capture domain events (CycleDetected, ContradictionDetected, GraphUpdated)
+- Expose metrics (graph size, violation count, etc.)
+- Support audit and debugging
+
+**Constraints:**
+- Read-only; does not modify the graph
+- Can be used in production without affecting reasoning
+
+**Dependencies:** got.domain.events, event handlers
