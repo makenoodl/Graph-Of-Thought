@@ -1,6 +1,6 @@
 """Orchestrator for graph analysis (Domain Service)."""
 from dataclasses import dataclass, field
-from typing import List, Optional, Set
+from typing import List, Optional
 
 from got.domain.model.graph import Graph
 from got.domain.reasoning.analysis.contradiction_detector import (
