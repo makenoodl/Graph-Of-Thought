@@ -14,7 +14,6 @@ from got.domain.reasoning.analysis.connectivity import (
 from got.domain.reasoning.analysis.critical_paths import (
     CriticalPathAnalyzer,
     CriticalPathsResult,
-    SupportPath,
 )
 
 
