@@ -53,6 +53,14 @@ class StructureTextServiceLLM:
         except json.JSONDecodeError as e:
             raise ValueError(f"LLM did not return valid JSON: {content[:500]}") from e
 
+        for edge in raw_spec.get("edges", []):
+            rt = edge.get("relation_type")
+            if rt == "builds_on":
+                edge["relation_type"] = "supports"
+            elif rt == "fact":
+                edge["relation_type"] = "evidence_for"
+
+
         spec = GraphSpecDTO.model_validate(raw_spec)
 
         graph = Graph()
