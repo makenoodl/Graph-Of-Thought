@@ -112,3 +112,12 @@ Set it via environment variable or `.env` (loaded by the FastAPI app):
 ```bash
 export OPENROUTER_API_KEY=your_key_here
 ```
+
+# Getting Started
+There are two main ways to use the engine:
+As an HTTP API (send text, receive graph + analysis)
+As a Python library (manipulate graphs directly in-process)
+1. HTTP API: `/analyze-text`
+```bash
+uv run uvicorn got.api.app:app --reload
+```
