@@ -74,3 +74,18 @@ Deterministic algorithms then operate on the graph to:
 
 >[!TIP]
 >Treating reasoning as a graph data structure allows reasoning to be inspected, debugged, and extended programmatical
+
+# Installation
+This project uses uv for dependency management, but you can also use plain pip.
+## With uv (recommended)
+```python 
+# 1) Create and activate a virtual environment
+uv venv .venv
+source .venv/bin/activate  # macOS / Linux
+# On Windows:
+# .venv\Scripts\activate
+
+# 2) Install dependencies from pyproject / lockfile
+uv sync
+
+```
