@@ -32,3 +32,22 @@ The system then applies a deterministic reasoning engine that performs:
 graph-level reasoning analysis
 
 This architecture separates two distinct computational roles:
+
+```
+LLMs → semantic interpretation
+Graph engine → deterministic reasoning
+```
+
+Natural language is first interpreted by a language model and converted into a structured graph specification.
+Once constructed, the reasoning graph becomes the central object of computation, upon which deterministic algorithms operate.
+
+The underlying hypothesis is that reasoning is more naturally represented as a graph than as a sequence, particularly for complex, evolving, and multi-constraint problem spaces that resemble real human cognitive processes.
+
+By externalizing reasoning into a structured graph, the system enables reasoning that is:
+
+- explicit
+- inspectable
+- auditable
+- composable across reasoning steps
+
+The Graph-of-Thought Reasoning Engine therefore proposes a shift from answer-centric AI to thought-centric systems, laying the foundations for a new class of graph-native cognitive architectures.
