@@ -72,5 +72,5 @@ Deterministic algorithms then operate on the graph to:
 - detect contradictions
 - analyze reasoning paths.
 
-[!TIP]
-Treating reasoning as a graph data structure allows reasoning to be inspected, debugged, and extended programmatical
+>[!TIP]
+>Treating reasoning as a graph data structure allows reasoning to be inspected, debugged, and extended programmatical
