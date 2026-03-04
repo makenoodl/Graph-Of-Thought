@@ -14,3 +14,21 @@ This project takes the opposite approach:
 Reasoning should be a persistent, typed, and manipulable graph — not a stream of tokens.
 
 The Graph-of-Thought (GoT) Reasoning Engine is designed to externalize reasoning as an explicit graph-structured cognitive state, composed of conceptual nodes and typed relational edges.
+
+Within this framework:
+
+nodes represent units of thought (facts, hypotheses, goals, constraints, concepts)
+
+edges represent semantic relationships (support, contradiction, causality, structure, temporal relations)
+
+confidence values propagate through the graph to represent epistemic belief
+
+The system then applies a deterministic reasoning engine that performs:
+
+- structural validation
+- belief propagation
+- contradiction detection
+
+graph-level reasoning analysis
+
+This architecture separates two distinct computational roles:
