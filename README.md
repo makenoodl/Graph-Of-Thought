@@ -1,9 +1,6 @@
 # Graph-of-Thought Reasoning Engine
 ## A Deterministic Structural Core for LLM-Centric Cognitive Systems
 
-Graph-of-Thought Reasoning Engine
-A Deterministic Structural Core for LLM-Centric Cognitive Systems
-
 Most LLM reasoning approaches (Chain-of-Thought, Tree-of-Thought, prompt-based Graph-of-Thought) treat reasoning as a sequence of tokens or a tree of generated text.
 
 These approaches remain:
