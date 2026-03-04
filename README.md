@@ -35,6 +35,6 @@ A _deterministic reasoning_ engine then operates on this graph to perform:
 - contradiction detection
 - graph-level reasoning analysis
 
-[!IMPORTANT]
-The reasoning engine itself is fully deterministic.
+> [!IMPORTANT]
+> The reasoning engine itself is fully deterministic.
 Language models are only used to transform natural language into a structured graph representation.
