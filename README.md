@@ -107,3 +107,8 @@ source .venv/bin/activate  # or .venv\Scripts\activate on Windows
 pip install -e .
 ```
 
+You also need an OpenRouter API key (used by the LLM structuring service).
+Set it via environment variable or `.env` (loaded by the FastAPI app):
+```bash
+export OPENROUTER_API_KEY=your_key_here
+```
