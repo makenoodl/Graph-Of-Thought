@@ -89,3 +89,21 @@ source .venv/bin/activate  # macOS / Linux
 uv sync
 
 ```
+Then you can run the API or examples:
+
+```python
+# FastAPI app (dev)
+uv run uvicorn got.api.app:app --reload
+
+# Example sandbox
+uv run python examples/simple_sandbox.py
+```
+### With plain pip
+
+```python
+python -m venv .venv
+source .venv/bin/activate  # or .venv\Scripts\activate on Windows
+
+pip install -e .
+```
+
