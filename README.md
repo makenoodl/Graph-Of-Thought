@@ -51,3 +51,26 @@ This leads to several limitations:
 Graph-of-Thought explores a different paradigm:
 
 > Reasoning should be represented as structured state, not just generated language.
+
+# Approach
+The system separates two distinct computational roles:
+```
+LLMs → semantic interpretation
+Graph engine → deterministic reasoning
+```
+
+The architecture follows a two-stage process:
+
+**1. Semantic Interpretation**
+Natural language reasoning is interpreted by a language model and converted into a structured graph specification.
+
+**2. Deterministic Reasoning**
+Once constructed, the reasoning graph becomes the central object of computation.
+Deterministic algorithms then operate on the graph to:
+- validate reasoning structure
+- propagate epistemic confidence
+- detect contradictions
+- analyze reasoning paths.
+
+[!TIP]
+Treating reasoning as a graph data structure allows reasoning to be inspected, debugged, and extended programmatical
