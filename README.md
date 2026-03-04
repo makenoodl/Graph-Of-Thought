@@ -132,3 +132,21 @@ curl -X POST http://localhost:8000/analyze-text \
   }' | jq
 
 ```
+
+Typical response (simplified):
+
+```bash
+{
+  "graph": {
+    "nodes": [...],
+    "edges": [...],
+    "metadata": {...}
+  },
+  "analysis": {
+    "contradiction_count": 1,
+    "blocked_paths": [...],
+    "viable_paths": [...],
+    "recommendation": "Focus on new segments; pricing lever is constrained."
+  }
+}
+```
