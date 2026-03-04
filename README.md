@@ -121,3 +121,14 @@ As a Python library (manipulate graphs directly in-process)
 ```bash
 uv run uvicorn got.api.app:app --reload
 ```
+Then call: 
+```bash
+curl -X POST http://localhost:8000/analyze-text \
+  -H "Content-Type: application/json" \
+  -d '{
+    "text": "We want to increase B2B revenue by 30% next year. \
+             Options: raise prices, expand to new segments, or improve conversion. \
+             We have strong evidence that current SMB pricing is already at its ceiling."
+  }' | jq
+
+```
