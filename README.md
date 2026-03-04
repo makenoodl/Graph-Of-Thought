@@ -35,3 +35,19 @@ A _deterministic reasoning_ engine then operates on this graph to perform:
 > [!IMPORTANT]
 > The reasoning engine itself is fully deterministic.
 Language models are only used to transform natural language into a structured graph representation.
+
+# Motivation
+
+Large Language Models have recently demonstrated strong reasoning abilities through prompting techniques such as:
+- Chain-of-Thought
+- Tree-of-Thought
+- prompt-based Graph-of-Thought
+However, these approaches still represent reasoning as generated text.
+This leads to several limitations:
+- reasoning cannot easily be **verified**
+- reasoning cannot be **reused across reasoning steps**
+- reasoning cannot be treated as **a structured computational object**
+
+Graph-of-Thought explores a different paradigm:
+
+> Reasoning should be represented as structured state, not just generated language.
