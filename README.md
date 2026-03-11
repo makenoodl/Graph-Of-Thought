@@ -36,7 +36,7 @@ A _deterministic reasoning_ engine then operates on this graph to perform:
 > The reasoning engine itself is fully deterministic.
 Language models are only used to transform natural language into a structured graph representation.
 
-# Motivation
+## Motivation
 
 Large Language Models have recently demonstrated strong reasoning abilities through prompting techniques such as:
 - Chain-of-Thought
@@ -52,7 +52,7 @@ Graph-of-Thought explores a different paradigm:
 
 > Reasoning should be represented as structured state, not just generated language.
 
-# Approach
+## Approach
 The system separates two distinct computational roles:
 ```
 LLMs → semantic interpretation
@@ -75,7 +75,7 @@ Deterministic algorithms then operate on the graph to:
 >[!TIP]
 >Treating reasoning as a graph data structure allows reasoning to be inspected, debugged, and extended programmatical
 
-# Installation
+## Installation
 This project uses uv for dependency management, but you can also use plain pip.
 ## With uv (recommended)
 ```python 
@@ -113,7 +113,7 @@ Set it via environment variable or `.env` (loaded by the FastAPI app):
 export OPENROUTER_API_KEY=your_key_here
 ```
 
-# Getting Started
+## Getting Started
 There are two main ways to use the engine:
 As an HTTP API (send text, receive graph + analysis)
 As a Python library (manipulate graphs directly in-process)
