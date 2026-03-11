@@ -150,3 +150,30 @@ Typical response (simplified):
   }
 }
 ```
+
+## Contributing
+
+Contributions are welcome.
+
+Areas where help is especially valuable:
+
+- **New reasoning modules**  
+  Validators, propagators, analyzers for specific patterns or domains.
+
+- **Tests**  
+  Focused tests on small synthetic graphs to ensure determinism and correctness.
+
+- **Examples**  
+  Real-world usage examples in `examples/` (agent workflows, planning, analysis).
+
+- **Integrations**  
+  Connectors to LLM providers, agent frameworks, and visualization tools.
+
+For the Structural Reasoning Engine specifically, please keep it:
+
+- Deterministic  
+- Fully testable  
+- Explicit in its rules  
+- Independent from LLM calls
+
+Please open an issue or pull request on GitHub to discuss ideas before large changes
