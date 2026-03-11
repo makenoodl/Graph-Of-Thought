@@ -1,7 +1,7 @@
 # Graph-of-Thought Reasoning Engine
 ## A Deterministic Structural Core for LLM-Centric Cognitive Systems
 
-Most LLM reasoning approaches (Chain-of-Thought, Tree-of-Thought, prompt-based Graph-of-Thought) treat reasoning as a sequence of tokens or a tree of generated text.
+Graph-of-Thought (GoT) is a Python reasoning engine that represents thinking as an explicit graph instead of a hidden chain-of-thought. It lets you build LLM-powered systems where validation, propagation and analysis of reasoning are deterministic and inspectable
 
 These approaches remain:
 
