@@ -151,6 +151,18 @@ Typical response (simplified):
 }
 ```
 
+## Roadmap
+This is an early-stage project; the current focus is on solidifying the core and making it usable for real builders.
+Planned directions include:
+
+- End-to-end Text → Graph → Reasoning pipelines
+    - Stabilize and document the flow from raw text to a structured reasoning graph and back.
+- Richer examples & demos 
+    - Fill the examples/ folder with complete, real-world scenarios (agent debugging, planning, argument analysis…).
+- Ecosystem integrations
+    - Integrate with popular agent frameworks (LangChain, CrewAI, etc.).
+    - Provide simple hooks for visualization tools (graph viewers, dashboards).
+
 ## Contributing
 
 Contributions are welcome.
