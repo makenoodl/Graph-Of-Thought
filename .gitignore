@@ -11,3 +11,9 @@ __pycache__/
 *.pyc
 
 .env
+.venv
+
+/dist 
+.ruff_cache
+pytest_cache
+.DS_Store
