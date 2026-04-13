@@ -1,6 +1,8 @@
 # Graph-of-Thought Reasoning Engine
 ## A Deterministic Structural Core for LLM-Centric Cognitive Systems
 
+_LLM reasoning is untestable. You can't assert on a chain-of-thought, catch a contradiction before it propagates, or replay a reasoning step. GoT fixes that by making reasoning a graph you can inspect, validate and debug like any other data structure._
+
 Graph-of-Thought (GoT) is a Python reasoning engine that represents thinking as an explicit graph instead of a hidden chain-of-thought. It lets you build LLM-powered systems where validation, propagation and analysis of reasoning are deterministic and inspectable
 
 These approaches remain:
