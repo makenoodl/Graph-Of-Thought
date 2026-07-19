@@ -53,14 +53,7 @@ class StructureTextServiceLLM:
         except json.JSONDecodeError as e:
             raise ValueError(f"LLM did not return valid JSON: {content[:500]}") from e
 
-        for edge in raw_spec.get("edges", []):
-            rt = edge.get("relation_type")
-            if rt == "builds_on":
-                edge["relation_type"] = "supports"
-            elif rt == "fact":
-                edge["relation_type"] = "evidence_for"
-
-
+        self._sanitize_llm_spec(raw_spec)
         spec = GraphSpecDTO.model_validate(raw_spec)
 
         graph = Graph()
@@ -100,6 +93,97 @@ class StructureTextServiceLLM:
                 starting_node_ids.append(id_map[nid])
 
         return graph, starting_node_ids
+
+    def _sanitize_llm_spec(self, raw_spec: dict) -> None:
+        """Coerce LLM enum drift into GraphSpecDTO-allowed values (in place)."""
+        allowed_node_types = {
+            "concept",
+            "hypothesis",
+            "fact",
+            "goal",
+            "state",
+            "problem",
+            "solution",
+            "constraint",
+        }
+        node_aliases = {
+            "opportunity": "goal",
+            "objective": "goal",
+            "risk": "problem",
+            "issue": "problem",
+            "action": "solution",
+            "assumption": "hypothesis",
+            "insight": "concept",
+            "idea": "concept",
+            "note": "concept",
+            "feature": "solution",
+            "tool": "concept",
+            "product": "concept",
+        }
+        allowed_relations = {
+            "causes",
+            "requires",
+            "depends_on",
+            "enables",
+            "prevents",
+            "implies",
+            "supports",
+            "contradicts",
+            "blocks",
+            "weakens",
+            "strengthens",
+            "evidence_for",
+            "evidence_against",
+            "explains",
+            "contains",
+            "part_of",
+            "similar_to",
+            "instance_of",
+            "type_of",
+            "implements",
+            "precedes",
+            "follows",
+        }
+        relation_aliases = {
+            "builds_on": "supports",
+            "fact": "evidence_for",
+            "addresses": "supports",
+            "solves": "supports",
+            "mitigates": "prevents",
+            "exacerbates": "strengthens",
+            "worsens": "strengthens",
+            "leads_to": "causes",
+            "results_in": "causes",
+            "related_to": "similar_to",
+            "uses": "depends_on",
+            "needs": "requires",
+            "includes": "contains",
+            "provides": "enables",
+            "offers": "enables",
+            "has": "contains",
+        }
+
+        for node in raw_spec.get("nodes", []) or []:
+            if not isinstance(node, dict):
+                continue
+            nt = node.get("node_type")
+            if isinstance(nt, str):
+                key = nt.strip().lower()
+                key = node_aliases.get(key, key)
+                if key not in allowed_node_types:
+                    key = "concept"
+                node["node_type"] = key
+
+        for edge in raw_spec.get("edges", []) or []:
+            if not isinstance(edge, dict):
+                continue
+            rt = edge.get("relation_type")
+            if isinstance(rt, str):
+                key = rt.strip().lower()
+                key = relation_aliases.get(key, key)
+                if key not in allowed_relations:
+                    key = "supports"
+                edge["relation_type"] = key
 
     def _build_system_prompt(self) -> str:
         return (
