@@ -1,203 +1,61 @@
-## Structural Reasoning Engine (Phase 2)
+## Structural Reasoning Engine
 
-### 1. Purpose
+Deterministic, non-LLM reasoning over a `Graph`. Same input graph → same diagnostics and confidence updates (timestamps excluded). This package must not call language models or the network.
 
-The Structural Reasoning Engine is the second phase of the Graph-of-Thought (GoT) system.
+Planning-era notes: [docs/planning/reasoning.md](../../../docs/planning/reasoning.md). Implementation map: [docs/architecture/components.md](../../../docs/architecture/components.md).
 
-Its primary goal is to transform a static reasoning graph into an **active cognitive object** by providing:
+### Modules
 
-- **Deterministic validation** of structural and epistemic coherence
-- **Propagation** of epistemic and causal information across the graph
-- **Analysis** of contradictions, connectivity, and critical reasoning paths
+1. **Validation** — `got/domain/reasoning/validation/`
+2. **Propagation** — `got/domain/reasoning/propagation/`
+3. **Analysis** — `got/domain/reasoning/analysis/`
 
-This layer is **strictly non-LLM**. It operates solely on the graph structure and its metadata, ensuring reproducibility, testability, and auditability.
+### Validation
 
----
+Question: is this graph structurally and epistemically coherent?
 
-### 2. Conceptual Foundations
+Orchestrator: `Validator.validate(graph) -> ValidationResult` (`validator.py`).
 
-The engine assumes the following core model (defined in the domain foundation layer):
+`ValidationResult` holds string `violations` and `warnings`, `is_valid` (no violations), and events (`CycleDetected`, `ContradictionDetected`). `ValidationReport` in `violations.py` is unused.
 
-- **Nodes**: concepts, hypotheses, facts, constraints, states
-- **Edges**: typed relations (e.g. causal, epistemic, support, contradiction, dependency, refinement)
-- **Graph**: the current reasoning state
+| Class | Layer | Implemented checks |
+|-------|-------|-------------------|
+| `CausalValidator` | causal | Causal cycles (**warnings**); `FOLLOWS` on a pair that also has a causal edge (**warnings**) |
+| `EpistemicValidator` | epistemic | Direct `CONTRADICTS` (**violations**); opposing pairs; evidence-for+against; confidence vs support/weaken counts |
+| `StructuralValidator` | structural | Hierarchical cycles (**violations**); anti-symmetry; 2-step transitivity gaps; missing inverses; circular INSTANCE_OF/TYPE_OF; SIMILAR_TO asymmetry |
 
-In this setting:
+There is no separate temporal or logical validator. Empty file: `consistency_checker.py`.
 
-- Reasoning is **not** a sequence of tokens.
-- Reasoning is a **persistent graph** that can be inspected, revised, and audited.
-- Any change in “thinking” must correspond to a **graph mutation**.
+An optional `event_handler` may be passed to `Validator`; the HTTP path does not use it.
 
-The Structural Reasoning Engine is responsible for checking and transforming this graph in a principled way.
+### Propagation
 
----
+Question: how does confidence move from starting nodes?
 
-### 3. Design Constraints
+Orchestrator: `PropagationService`.
 
-The engine is designed under the following constraints:
+- `propagate_epistemic(graph, starting_node_ids)` — BFS on `is_epistemic()` outgoing edges
+- `propagate_causal(graph, starting_node_ids)` — BFS on `is_causal()` outgoing edges
+- `propagate_all` — epistemic then causal
 
-- **Deterministic**: same input graph → same output and diagnostics.
-- **Non-LLM**: no probabilistic or opaque model calls.
-- **Fully testable**: all operations are unit-testable on small synthetic graphs.
-- **Explainable**: every validation, propagation, and analysis step is grounded in explicit rules over the graph.
+Both update **target node** confidence by a fixed factor (default `0.1`). They do not add edges or infer new causal links. Visit-once BFS. `IMPLIES` / `BLOCKS` are listed in epistemic lookup sets but are not traversed (`is_epistemic()` is false).
 
-These constraints distinguish this layer from typical Chain-of-Thought (CoT) or Tree-of-Thought (ToT) approaches, which are often opaque and non-reproducible.
+Contract: `BasePropagator` protocol in `base_propagator.py`.
 
----
+### Analysis
 
-### 4. Module Overview
+Question: where are the contradictions, components, and support chains?
 
-The Structural Reasoning Engine is organized into three main modules:
+| Class | Implemented output |
+|-------|-------------------|
+| `ContradictionDetector` | `ContradictionCluster` list |
+| `ConnectivityAnalyzer` | Undirected components, isolated nodes (not articulation points) |
+| `CriticalPathAnalyzer` | Reverse BFS along supporting relations to a target |
 
-1. **Validation**
-2. **Propagation**
-3. **Analysis**
+`AnalysisService.analyze()` fills contradiction clusters and connectivity. It sets `critical_paths` to `{}`. Call `analyze_critical_paths` for paths.
 
-Each module exposes a clear interface and can be tested independently.
+### Contribution rules
 
----
+**Do:** add composable validators, propagators, or analyzers; write focused tests on synthetic graphs; document new invariants in [docs/domain/invariants.md](../../../docs/domain/invariants.md).
 
-### 5. Validation
-
-#### 5.1 Objective
-
-The Validation module answers the question:
-
-> “Is this reasoning structurally and epistemically coherent?”
-
-It does so by checking **invariants** on the graph structure, such as the absence of forbidden cycles or epistemic conflicts.
-
-#### 5.2 Components
-
-- **CausalValidator**
-  - Detects **causal cycles** (e.g. A causes B, B causes C, C causes A).
-  - Validates **temporal coherence**, when temporal ordering is encoded.
-
-- **EpistemicValidator**
-  - Identifies **belief conflicts**, such as nodes asserting incompatible propositions within the same epistemic context.
-  - Checks compatibility of confidence levels, sources, and perspectives.
-
-- **StructuralValidator**
-  - Verifies **hierarchical consistency** (e.g. refinement, part-of relations).
-  - Checks **transitivity** and other structural properties where applicable.
-
-- **Validator Orchestrator** (`validator.py`)
-  - Coordinates all validators.
-  - Provides a high-level interface, e.g.:
-    - `validate(graph) -> ValidationReport`
-
-#### 5.3 Output
-
-The Validation module returns a **ValidationReport** containing:
-
-- A list of **violations** (type, location in the graph, explanation).
-- Optionally, suggestions for remediation or affected subgraphs.
-
-This report is a key artefact for auditing reasoning quality.
-
----
-
-### 6. Propagation
-
-#### 6.1 Objective
-
-The Propagation module answers the question:
-
-> “What propagates from what in this reasoning state?”
-
-It defines how information such as **confidence**, **activation**, or **effects** propagates along edges, according to their types.
-
-#### 6.2 Components
-
-- **EpistemicPropagator**
-  - Propagates **epistemic attributes** (e.g. confidence, belief strength) across relations such as support, contradiction, or dependency.
-  - Applies deterministic aggregation rules (e.g. combination of supporting/conflicting evidence).
-
-- **CausalPropagator**
-  - Propagates **causal influence** along causal edges.
-  - Allows reasoning such as: “If A holds, and A causes B, then B should be updated accordingly.”
-
-- **Propagation Orchestrator** (`propagation.py`)
-  - Coordinates propagation processes.
-  - Exposes operations such as:
-    - `propagate_epistemic(graph, starting_nodes) -> graph'`
-    - `propagate_causal(graph, starting_nodes) -> graph'`
-
-#### 6.3 Design Considerations
-
-- Propagation rules are **explicit** and **configurable**, not learned or implicit.
-- The propagation process is **terminating** and **order-independent** (or explicitly ordered), to preserve determinism.
-
----
-
-### 7. Analysis
-
-#### 7.1 Objective
-
-The Analysis module answers questions such as:
-
-- “Where are the contradictions?”
-- “How is this reasoning graph structurally organized?”
-- “What are the critical paths supporting a given conclusion?”
-
-It provides higher-level insights over the graph, beyond local validation.
-
-#### 7.2 Components
-
-- **ContradictionDetector**
-  - Identifies **minimal conflicting subgraphs** where nodes and relations are jointly inconsistent.
-  - Can reuse information from the EpistemicValidator or perform dedicated pattern detection.
-
-- **Connectivity Analysis**
-  - Examines the **connectivity structure** of the graph (components, clusters, articulation points).
-  - Helps understand whether reasoning is fragmented or well-integrated.
-
-- **Critical Reasoning Paths**
-  - Extracts **key support paths** for a target node (e.g. a conclusion).
-  - Useful for explainability: “Why does the system consider this claim justified?”
-
-#### 7.3 Outputs
-
-The Analysis module produces:
-
-- Sets of **subgraphs** (e.g. contradiction clusters, main reasoning chains).
-- **Metrics** characterizing the graph (e.g. degree distributions, central nodes).
-- Artefacts that can be surfaced to users or downstream systems for transparency.
-
----
-
-### 8. Relevance for Contributors
-
-From an academic and engineering standpoint, this layer is critical because:
-
-1. It enforces a **clear separation of concerns**:
-   - Language interpretation (LLM) vs. structural reasoning (this engine).
-2. It provides a **deterministic reasoning core**:
-   - Essential for reproducibility, debugging, and scientific evaluation.
-3. It grounds reasoning in **explicit, inspectable rules**:
-   - Violations, propagations, and analyses can all be traced back to graph-level operations.
-4. It treats the graph as a **persistent cognitive state**:
-   - Reasoning is not an ephemeral log of tokens but an evolving, updatable structure.
-
-Contributors should approach this module as the **logical backbone** of the system. Any extension or modification must preserve:
-
-- Determinism
-- Testability
-- Explicitness of rules
-- Independence from LLM behavior
-
----
-
-### 9. Contribution Guidelines (for this layer)
-
-- **Do**:
-  - Add new validators, propagators, or analyzers as separate, composable components.
-  - Write small, focused tests on synthetic graphs.
-  - Document invariants and propagation rules explicitly.
-
-- **Do NOT**:
-  - Introduce LLM calls or non-deterministic behavior.
-  - Encode hidden heuristics that cannot be explained in terms of graph operations.
-  - Depend on textual prompts or token-level reasoning in this layer.
-
-The Structural Reasoning Engine is the place where reasoning becomes **computationally precise**. All contributions should reinforce this property.
+**Do not:** introduce LLM calls, hidden heuristics, or prompt/token logic in this package.

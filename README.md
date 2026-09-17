@@ -1,193 +1,95 @@
 # Graph-of-Thought Reasoning Engine
-## A Deterministic Structural Core for LLM-Centric Cognitive Systems
 
-_LLM reasoning is untestable. You can't assert on a chain-of-thought, catch a contradiction before it propagates, or replay a reasoning step. GoT fixes that by making reasoning a graph you can inspect, validate and debug like any other data structure._
+A deterministic structural core for LLM-centric cognitive systems.
 
-Graph-of-Thought (GoT) is a Python reasoning engine that represents thinking as an explicit graph instead of a hidden chain-of-thought. It lets you build LLM-powered systems where validation, propagation and analysis of reasoning are deterministic and inspectable
+LLM chain-of-thought is untestable: you cannot assert on hidden tokens, catch a contradiction before it spreads, or replay a reasoning step. Graph-of-Thought (GoT) represents thinking as an explicit graph you can inspect, validate, and debug like any other data structure.
 
-These approaches remain:
+Language models are used only to turn natural language into a structured graph. Validation, confidence propagation, and analysis are deterministic Python.
 
-- **Opaque** — reasoning is not a first-class computational object
-- **Ephemeral** — reasoning disappears after generation
-- **Difficult to audit** — intermediate reasoning steps cannot be structurally inspected
-- **Difficult to test deterministically** — reasoning cannot easily be validated as system state 
-
-This project takes the opposite approach.
-
-> [!IMPORTANT]
 > Reasoning should be represented as a persistent, typed, and manipulable graph — not a transient stream of tokens.
 
-# Overview
+**Persistence across processes is not implemented.** A `Graph` lives in memory for a library call or HTTP request. See [docs/architecture/overview.md](docs/architecture/overview.md).
 
-The Graph-of-Thought (GoT) Reasoning Engine externalizes reasoning as an explicit graph-structured cognitive state, composed of conceptual nodes and typed relational edges.
+## Documentation
 
-Within this framework:
+| Doc | Purpose |
+|-----|---------|
+| [AGENTS.md](AGENTS.md) | Contract for AI coding agents |
+| [docs/README.md](docs/README.md) | Documentation index |
+| [docs/development/getting-started.md](docs/development/getting-started.md) | Install, run, test |
+| [got/domain/reasoning/README.md](got/domain/reasoning/README.md) | Structural reasoning engine |
 
-- nodes represent units of thought (facts, hypotheses, goals, constraints, concepts)
-- edges represent semantic relationships (support, contradiction, causality, structural relations, temporal relations)
+## Overview
 
-- confidence values propagate through the graph to represent epistemic belief
+Nodes are units of thought (`fact`, `hypothesis`, `goal`, `constraint`, …). Edges are typed relations (support, contradiction, causality, structure, time). `Confidence` on nodes is epistemic belief in `[0.0, 1.0]`, not a statistical probability.
 
-A _deterministic reasoning_ engine then operates on this graph to perform:
-- structural validation
-- belief propagation
-- contradiction detection
-- graph-level reasoning analysis
+The engine then:
 
-> [!IMPORTANT]
-> The reasoning engine itself is fully deterministic.
-Language models are only used to transform natural language into a structured graph representation.
+- validates structure and epistemic conflicts
+- propagates confidence along epistemic (and optionally causal) edges
+- detects contradiction clusters and connected components
 
-## Motivation
-
-Large Language Models have recently demonstrated strong reasoning abilities through prompting techniques such as:
-- Chain-of-Thought
-- Tree-of-Thought
-- prompt-based Graph-of-Thought
-However, these approaches still represent reasoning as generated text.
-This leads to several limitations:
-- reasoning cannot easily be **verified**
-- reasoning cannot be **reused across reasoning steps**
-- reasoning cannot be treated as **a structured computational object**
-
-Graph-of-Thought explores a different paradigm:
-
-> Reasoning should be represented as structured state, not just generated language.
-
-## Approach
-The system separates two distinct computational roles:
 ```
-LLMs → semantic interpretation
+LLMs → semantic interpretation (GraphSpecDTO)
 Graph engine → deterministic reasoning
 ```
 
-The architecture follows a two-stage process:
-
-**1. Semantic Interpretation**
-Natural language reasoning is interpreted by a language model and converted into a structured graph specification.
-
-**2. Deterministic Reasoning**
-Once constructed, the reasoning graph becomes the central object of computation.
-Deterministic algorithms then operate on the graph to:
-- validate reasoning structure
-- propagate epistemic confidence
-- detect contradictions
-- analyze reasoning paths.
-
->[!TIP]
->Treating reasoning as a graph data structure allows reasoning to be inspected, debugged, and extended programmatical
-
 ## Installation
-This project uses uv for dependency management, but you can also use plain pip.
-## With uv (recommended)
-```python 
-# 1) Create and activate a virtual environment
+
+This project uses [uv](https://docs.astral.sh/uv/). Python 3.11+ (`pyproject.toml`). CI uses 3.11.
+
+```bash
 uv venv .venv
-source .venv/bin/activate  # macOS / Linux
-# On Windows:
-# .venv\Scripts\activate
-
-# 2) Install dependencies from pyproject / lockfile
-uv sync
-
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+uv sync --dev
 ```
-Then you can run the API or examples:
 
-```python
-# FastAPI app (dev)
-uv run uvicorn got.api.app:app --reload
+With pip:
 
-# Example sandbox
-uv run python examples/simple_sandbox.py
-```
-### With plain pip
-
-```python
+```bash
 python -m venv .venv
-source .venv/bin/activate  # or .venv\Scripts\activate on Windows
-
-pip install -e .
+source .venv/bin/activate
+pip install -e ".[dev]"
 ```
 
-You also need an OpenRouter API key (used by the LLM structuring service).
-Set it via environment variable or `.env` (loaded by the FastAPI app):
+## Run
+
+HTTP API (requires `OPENROUTER_API_KEY`; the FastAPI app loads `.env`):
+
 ```bash
 export OPENROUTER_API_KEY=your_key_here
-```
-
-## Getting Started
-There are two main ways to use the engine:
-As an HTTP API (send text, receive graph + analysis)
-As a Python library (manipulate graphs directly in-process)
-1. HTTP API: `/analyze-text`
-```bash
 uv run uvicorn got.api.app:app --reload
 ```
-Then call: 
+
 ```bash
 curl -X POST http://localhost:8000/analyze-text \
   -H "Content-Type: application/json" \
-  -d '{
-    "text": "We want to increase B2B revenue by 30% next year. \
-             Options: raise prices, expand to new segments, or improve conversion. \
-             We have strong evidence that current SMB pricing is already at its ceiling."
-  }' | jq
-
+  -d '{"text": "We want to increase B2B revenue. SMB pricing is already at its ceiling."}'
 ```
 
-Typical response (simplified):
+The JSON body includes `graph` (`nodes`, `edges`, `metadata`) and `analysis` (`blocked_paths`, `viable_paths`, `recommendation`, `contradiction_count`). **`blocked_paths` and `viable_paths` are always `0` today**; `recommendation` is derived from those counts, so it does not yet reflect real path analysis.
+
+In-process, without an LLM:
 
 ```bash
-{
-  "graph": {
-    "nodes": [...],
-    "edges": [...],
-    "metadata": {...}
-  },
-  "analysis": {
-    "contradiction_count": 1,
-    "blocked_paths": [...],
-    "viable_paths": [...],
-    "recommendation": "Focus on new segments; pricing lever is constrained."
-  }
-}
+uv run python examples/simple_sandbox.py
 ```
 
-## Roadmap
-This is an early-stage project; the current focus is on solidifying the core and making it usable for real builders.
-Planned directions include:
+```bash
+uv run pytest
+uv run ruff check got examples
+```
 
-- End-to-end Text → Graph → Reasoning pipelines
-    - Stabilize and document the flow from raw text to a structured reasoning graph and back.
-- Richer examples & demos 
-    - Fill the examples/ folder with complete, real-world scenarios (agent debugging, planning, argument analysis…).
-- Ecosystem integrations
-    - Integrate with popular agent frameworks (LangChain, CrewAI, etc.).
-    - Provide simple hooks for visualization tools (graph viewers, dashboards).
+## Status
+
+Implemented: domain graph, ops, validators, propagators, analyzers, FastAPI `POST /analyze-text`, OpenRouter structurer.
+
+Not implemented: graph persistence, auth, agent runtime, `EnrichGraphService`, ports/infrastructure adapters (empty files). Cursor rules named `*-agent.mdc` are editor personas, not Python modules.
+
+Roadmap ideas (not current code): richer examples, agent-framework integrations, visualization hooks.
 
 ## Contributing
 
-Contributions are welcome.
+Contributions are welcome: new validators/propagators/analyzers, synthetic-graph tests, examples.
 
-Areas where help is especially valuable:
-
-- **New reasoning modules**  
-  Validators, propagators, analyzers for specific patterns or domains.
-
-- **Tests**  
-  Focused tests on small synthetic graphs to ensure determinism and correctness.
-
-- **Examples**  
-  Real-world usage examples in `examples/` (agent workflows, planning, analysis).
-
-- **Integrations**  
-  Connectors to LLM providers, agent frameworks, and visualization tools.
-
-For the Structural Reasoning Engine specifically, please keep it:
-
-- Deterministic  
-- Fully testable  
-- Explicit in its rules  
-- Independent from LLM calls
-
-Please open an issue or pull request on GitHub to discuss ideas before large changes
+The structural engine must stay deterministic, testable, explicit, and independent of LLM calls. Read [AGENTS.md](AGENTS.md) and [docs/development/conventions.md](docs/development/conventions.md) before large changes.
