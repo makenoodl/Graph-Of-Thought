@@ -1,0 +1,18 @@
+---
+description: Structural reasoning engine must stay deterministic and non-LLM
+globs: got/domain/reasoning/**/*.py
+alwaysApply: false
+---
+
+# Reasoning engine
+
+`got/domain/reasoning` is the deterministic core (validation, propagation, analysis).
+
+- No LLM, HTTP, dotenv, or filesystem calls.
+- Same graph in → same violations, warnings, and confidence updates (aside from timestamps).
+- Add a new validator/propagator/analyzer as its own class; register it on `Validator`, `PropagationService`, or `AnalysisService`.
+- Do not encode rules that cannot be explained as graph operations.
+- `AnalysisService.analyze()` does not fill `critical_paths`; use `analyze_critical_paths` or change that API deliberately.
+- Cover new rules with synthetic graphs in `got/tests/`.
+
+Contributor policy: `got/domain/reasoning/README.md`.

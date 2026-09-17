@@ -1,0 +1,24 @@
+---
+description: Python conventions for Graph-of-Thought modules
+globs: "**/*.py"
+alwaysApply: false
+---
+
+# Coding standards
+
+- Domain: dataclasses / enums; no Pydantic, FastAPI, or HTTP.
+- Application DTOs: Pydantic v2 (`GraphSpecDTO`, `GraphDTO`).
+- Mutations: `AddNode`, `AddEdge`, `RemoveNode`, `RemoveEdge`, `UpdateNodeConfidence`. Do not bypass `Graph.add_node` / `add_edge` integrity checks.
+- `Confidence` is frozen; assign a new instance (via `strengthen`/`weaken`/`update_confidence`).
+- Propagators: in-place confidence only; BFS; no add/remove of nodes or edges.
+- Validators: read-only; use `ValidationResult.add_violation` / `add_warning`.
+- New env vars belong next to `OPENROUTER_API_KEY` usage and `docs/operations/configuration.md`.
+- Do not add unused dependencies. `networkx` is already unused.
+
+```python
+# Avoid mutating graph.edges except inside Graph or RemoveEdge
+# Prefer:
+event = AddEdge().execute(graph, src, dst, RelationType.SUPPORTS)
+```
+
+Full notes: `docs/development/conventions.md`.

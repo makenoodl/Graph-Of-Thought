@@ -1,0 +1,17 @@
+---
+description: Core engineering contract — implemented vs planned, workflow, navigation
+alwaysApply: true
+---
+
+# Project core
+
+This repo is an in-memory Graph-of-Thought engine (`got/`), not a multi-agent runtime.
+
+- Before nontrivial edits, read `AGENTS.md` and `docs/architecture/overview.md`.
+- Workflow: Understand → Scope → Plan → Implement → Verify → Report.
+- Trust source under `got/` over `docs/planning/` and over Cursor `*-agent.mdc` personas.
+- Implemented path: `got/api` → `got/application` → `got/domain`.
+- Empty / unwired: `got/domain/ports/`, `got/infrastructure/`, `got/interface/`, `merge_nodes.py`.
+- `got/domain/reasoning` stays deterministic and LLM-free.
+- Verify with `uv run pytest` and `uv run ruff check got examples` when the change can break behavior or style. Do not claim checks you did not run. CI still uses `uv run ruff got examples`, which Ruff 0.14.x rejects.
+- Do not commit `.env` or API keys. LLM unit tests must stub `OpenRouterClient`.

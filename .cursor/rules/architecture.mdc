@@ -1,0 +1,22 @@
+---
+description: Layer boundaries for got/ domain, application, and API packages
+globs: got/**/*.py
+alwaysApply: false
+---
+
+# Architecture
+
+Package import rule: `got.api` → `got.application` → `got.domain`. Never import application/API from domain.
+
+| Change | Put it in |
+|--------|-----------|
+| Node/edge/graph integrity | `got/domain/model`, `got/domain/ops` |
+| Validate / propagate / analyze | `got/domain/reasoning` |
+| Use-case orchestration, DTOs, OpenRouter | `got/application` |
+| HTTP | `got/api` |
+
+- Do not reimplement validator or propagator rules in routes.
+- Do not add I/O to `got/domain/reasoning`.
+- Prefer live packages over empty `got/infrastructure` and `got/domain/ports` unless the task wires a real adapter.
+- Validation does not currently block propagation (`ValidateAndPropagateGraphUseCase`). Changing that is a behavior change; see `docs/decisions/0005-validation-does-not-block-propagation.md`.
+- Details: `docs/architecture/components.md`, `docs/domain/invariants.md`.

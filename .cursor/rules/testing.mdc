@@ -1,0 +1,25 @@
+---
+description: How to test domain reasoning and avoid live LLM calls
+globs: got/tests/**/*.py
+alwaysApply: false
+---
+
+# Testing
+
+- Framework: pytest. Local lint: `uv run ruff check got examples`. CI still runs `uv run ruff got examples` (broken on Ruff 0.14.x).
+- Build small synthetic graphs with `AddNode` / `AddEdge`.
+- Assert deterministic facts: confidence deltas, `is_valid`, violation/warning text, cluster membership.
+- Do not call OpenRouter. Stub `OpenRouterClient` for structurer tests.
+- Do not put live keys in tests; CI uses `OPENROUTER_API_KEY=dummy`.
+- Prefer new files `got/tests/test_*.py` over adding cases to `got/tests/__init__.py`.
+- Engine changes need at least one synthetic-graph test.
+
+```python
+# Pattern used by test_validate_then_propagate_epistemic
+graph = Graph()
+a = AddNode().execute(graph, "Rain", NodeType.FACT, Confidence(0.9)).node_id
+b = AddNode().execute(graph, "Wet grass", NodeType.CONCEPT, Confidence(0.5)).node_id
+AddEdge().execute(graph, a, b, RelationType.SUPPORTS)
+```
+
+Details: `docs/development/testing.md`.
