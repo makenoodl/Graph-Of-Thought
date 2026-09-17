@@ -1,8 +1,6 @@
 _bmad-output/
 _bmad
 
-docs/
-
 # Python cache
 __pycache__/
 *.py[cod]
