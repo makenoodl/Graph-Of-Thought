@@ -10,6 +10,7 @@ This repo is an in-memory Graph-of-Thought engine (`got/`), not a multi-agent ru
 - Before nontrivial edits, read `AGENTS.md` and `docs/architecture/overview.md`.
 - Workflow: Understand → Scope → Plan → Implement → Verify → Report.
 - Trust source under `got/` over `docs/planning/` and over Cursor `*-agent.mdc` personas.
+- Nontrivial architecture changes: RFC in `docs/rfcs/` then ADR. Do not invent historical motivations (RFC 0001).
 - Implemented path: `got/api` → `got/application` → `got/domain`.
 - Empty / unwired: `got/domain/ports/`, `got/infrastructure/`, `got/interface/`, `merge_nodes.py`.
 - `got/domain/reasoning` stays deterministic and LLM-free.

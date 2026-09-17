@@ -32,7 +32,7 @@ Documentation index: [docs/README.md](docs/README.md).
 | Config / secrets | [docs/operations/configuration.md](docs/operations/configuration.md) |
 | Tests | [docs/development/testing.md](docs/development/testing.md) |
 
-Do not treat [docs/planning/](docs/planning/README.md) as implementation truth.
+Do not treat [docs/planning/](docs/planning/README.md) as implementation truth. Nontrivial architecture changes go through [docs/rfcs/](docs/rfcs/README.md) then an ADR. Do not invent historical motivations; see [RFC 0001](docs/rfcs/0001-rfc-adr-process-and-historical-motivations.md).
 
 ## Workflow
 
