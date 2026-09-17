@@ -3,7 +3,8 @@
 **Status:** Accepted  
 **Date:** 2026-09-17  
 **Code:** `docs/rfcs/`, `docs/decisions/` (process only; no runtime change)  
-**RFC:** [../rfcs/0001-rfc-adr-process-and-historical-motivations.md](../rfcs/0001-rfc-adr-process-and-historical-motivations.md)
+**RFC:** [../rfcs/0001-rfc-adr-process-and-historical-motivations.md](../rfcs/0001-rfc-adr-process-and-historical-motivations.md)  
+**Issue:** https://github.com/makenoodl/Graph-Of-Thought/issues/1
 
 ## Context
 

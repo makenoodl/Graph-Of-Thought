@@ -3,7 +3,7 @@
 **Status:** Accepted (process). Historical questions remain open on the GitHub issue.  
 **Date:** 2026-09-17  
 **Author:** documentation pass (repository reconstruction)  
-**Issue:** pending GitHub issue URL  
+**Issue:** https://github.com/makenoodl/Graph-Of-Thought/issues/1  
 **Follow-up ADR:** [../decisions/0006-rfc-and-adr-for-evolution.md](../decisions/0006-rfc-and-adr-for-evolution.md)
 
 ## Summary
