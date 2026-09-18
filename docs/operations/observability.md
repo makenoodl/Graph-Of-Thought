@@ -10,6 +10,8 @@ Ops return event dataclasses (`NodeCreated`, `EdgeAdded`, …). Validators attac
 
 `GraphUpdated` has no producer on the live path.
 
+Proposed (not implemented): an in-process event journal, `run_id`, replay, and graph diff — [RFC 0002](../rfcs/0002-sequenced-runtime-roadmap.md) Wave 1. Without that journal there is no process reward and no Adaptive GoT debug.
+
 ## HTTP
 
 FastAPI default error responses only. `analyze_text` does not log. OpenRouter failures become unhandled `OpenRouterError` / `ValueError` (typically HTTP 500).

@@ -17,3 +17,5 @@ Use [architecture/overview.md](../architecture/overview.md) as the source of tru
 Do not implement features solely because they appear in this folder.
 
 Verified git timeline and unanswered historical questions: [../rfcs/0001-rfc-adr-process-and-historical-motivations.md](../rfcs/0001-rfc-adr-process-and-historical-motivations.md).
+
+Forward-looking sequenced plan (proposed): [../roadmap.md](../roadmap.md).

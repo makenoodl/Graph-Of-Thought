@@ -35,6 +35,7 @@ Draft RFC → GitHub issue discussion → Accepted RFC → ADR (implementation d
 | ID | Title | Status |
 |----|-------|--------|
 | [0001](0001-rfc-adr-process-and-historical-motivations.md) | RFC/ADR process and historical motivation recovery | Accepted (process); history recovery open |
+| [0002](0002-sequenced-runtime-roadmap.md) | Sequenced runtime roadmap (journal → AGoT loop → budget → reward → repo → RGoT) | Proposed |
 
 ## Template
 

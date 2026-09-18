@@ -19,6 +19,8 @@ Live code keeps `Graph` in memory on the caller or HTTP request. There is no sav
 - `Graph.version` is unused by ops; temporal rollback is not implemented.
 - Domain events cannot be replayed from storage.
 
+Proposed successor (not accepted): [RFC 0002](../rfcs/0002-sequenced-runtime-roadmap.md) Wave 1 (in-process journal) then Wave 5 (scoped `GraphRepo`). This ADR stays current until that work lands.
+
 ## Rationale
 
 **Unknown.** Observable fact: no working repository is wired.

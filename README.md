@@ -17,6 +17,7 @@ Language models are used only to turn natural language into a structured graph. 
 | [AGENTS.md](AGENTS.md) | Contract for AI coding agents |
 | [docs/README.md](docs/README.md) | Documentation index |
 | [docs/development/getting-started.md](docs/development/getting-started.md) | Install, run, test |
+| [docs/roadmap.md](docs/roadmap.md) | Proposed evolution (RFC 0002; not code) |
 | [got/domain/reasoning/README.md](got/domain/reasoning/README.md) | Structural reasoning engine |
 
 ## Overview
@@ -75,6 +76,13 @@ In-process, without an LLM:
 uv run python examples/simple_sandbox.py
 ```
 
+Hub demo (static snapshots of the same engine, no LLM): [`spaces/hf-demo/`](spaces/hf-demo/). Gradio live hosting on the Hub requires a [PRO](https://huggingface.co/pro) plan; the free Space is HTML.
+
+```bash
+hf auth login
+uv run --with huggingface_hub python spaces/hf-demo/publish.py
+```
+
 ```bash
 uv run pytest
 uv run ruff check got examples
@@ -86,7 +94,7 @@ Implemented: domain graph, ops, validators, propagators, analyzers, FastAPI `POS
 
 Not implemented: graph persistence, auth, agent runtime, `EnrichGraphService`, ports/infrastructure adapters (empty files). Cursor rules named `*-agent.mdc` are editor personas, not Python modules.
 
-Roadmap ideas (not current code): richer examples, agent-framework integrations, visualization hooks.
+Proposed evolution (not current code): [docs/roadmap.md](docs/roadmap.md) — journal and replay first, then a deterministic Adaptive GoT loop, budget, rule-based transition reward, scoped `GraphRepo`, learned policy last. Details: [RFC 0002](docs/rfcs/0002-sequenced-runtime-roadmap.md).
 
 ## Contributing
 

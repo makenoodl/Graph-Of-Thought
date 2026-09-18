@@ -23,8 +23,9 @@ This tree documents the **implemented** Graph-of-Thought engine. Planning notes 
 - [model.md](domain/model.md) — entities, value objects, events, operations
 - [invariants.md](domain/invariants.md) — enforced constraints and how to verify them
 
-## Decisions and RFCs
+## Decisions, RFCs, and roadmap
 
+- [roadmap.md](roadmap.md) — proposed evolution (not code); [RFC 0002](rfcs/0002-sequenced-runtime-roadmap.md)
 - [rfcs/README.md](rfcs/README.md) — proposals before architecture changes; [RFC 0001](rfcs/0001-rfc-adr-process-and-historical-motivations.md) recovers historical motivations
 - [decisions/README.md](decisions/README.md) — ADR index and [template](decisions/template.md)
 

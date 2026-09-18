@@ -111,3 +111,4 @@ No other external services are called.
 - Module map: [components.md](components.md)
 - Data shapes: [data-flow.md](data-flow.md)
 - Traced pipelines: [execution-flow.md](execution-flow.md)
+- Proposed evolution (not implemented): [../roadmap.md](../roadmap.md)

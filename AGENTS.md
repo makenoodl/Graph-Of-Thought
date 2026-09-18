@@ -16,6 +16,7 @@ Graph-of-Thought is a Python engine that stores reasoning as a typed in-memory g
 | Structural engine | `got/domain/reasoning/` |
 | Tests | `got/tests/` |
 | Example (no LLM) | `examples/simple_sandbox.py` |
+| Proposed evolution | [docs/roadmap.md](docs/roadmap.md), [docs/rfcs/0002-sequenced-runtime-roadmap.md](docs/rfcs/0002-sequenced-runtime-roadmap.md) |
 
 Empty and unwired: `got/domain/ports/`, `got/infrastructure/`, `got/interface/`, `main.py` (hello stub), `got/domain/ops/merge_nodes.py`.
 
